@@ -1,0 +1,62 @@
+<div data-region="index-page">
+    <button id="refresh">
+        Run code
+    </button>
+{{#compile_result}}
+    <div class="card-block" style="background: #ddadad;">{{ . }}</div>
+{{/compile_result}}
+</div>
+
+{{#js}}
+    {{! console.log("require is", require) }}
+    lang = '{{language}}';
+    var editorLanguage = lang === 'clang' ? 'c' : lang;
+    {{! console.log('language is ', language); }}
+    if (!window.lang) {
+        window.lang = lang;
+    }
+    var defaultCode;
+
+    if (lang === 'clang') {
+        defaultCode = [
+            '#include <stdio.h>',
+            'int main() {',
+            '\tprintf("Hello World!\\n");',
+            '\treturn 0;',
+            '}'
+            ].join('\n')
+    } else {
+        defaultCode = [
+            'class HelloWorld {',
+            '\tpublic static void main(String[] args) {',
+            '\t\tSystem.out.println("Hello world!");',
+            '\t}',
+            '}'
+            ].join('\n')
+    }
+
+    require(['mod_coding/refresh'], function(refresh) {
+        refresh.refresh();
+    });
+    require.config({ paths: { 'vs': '../../../node_modules/monaco-editor/min/vs' }});
+
+    require(['vs/editor/editor.main'], function() {
+    
+    {{! console.log("LANGUAGES ARE ", monaco.languages.getLanguages()); }}
+
+    if (!window.editor) {
+        var editor = monaco.editor.create(document.getElementById('container'), {
+            value: defaultCode,
+            language: editorLanguage,
+            cursorBlinking: 'phase',
+            cursorStyle: 'block',
+            theme: 'vs-dark',
+            wordBasedSuggestions: true
+        });
+
+        window.editor = editor;
+    }
+    {{! console.log("window editor") }}
+    {{! console.log("editor is ", editor); }}
+    });
+{{/js}}

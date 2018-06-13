@@ -25,10 +25,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-// Replace coding with the name of your module and remove this line.
-
-// use \mod_coding\output\renderer;
-
 require_once(dirname(dirname(dirname(__FILE__))).'/config.php');
 require_once(dirname(__FILE__).'/lib.php');
 require_once($CFG->dirroot . '/mod/coding/locallib.php');
@@ -48,11 +44,6 @@ if ($id) {
     error('You must specify a course_module ID or an instance ID');
 }
 
-// $columns = $DB->get_columns('coding');
-// error_log("The columns are " . var_export($columns, true));
-
-error_log("the coding object is " . var_export($coding, true));
-
 require_login($course, true, $cm);
 
 $event = \mod_coding\event\course_module_viewed::create(array(
@@ -69,23 +60,19 @@ $event->trigger();
 $urlparams = array('id' => $cm->id,
 'action' => optional_param('action', '', PARAM_ALPHA));
 
-// Print the page header.
 
 $PAGE->set_url('/mod/coding/view.php', $urlparams);
 $PAGE->set_title(format_string($coding->name));
 $PAGE->set_heading(format_string($course->fullname));
 $renderer = $PAGE->get_renderer('mod_coding');
-// $renderer = new \mod_coding\output\renderer();
 
 /*
-* Other things you may want to set - remove if not needed.
 * $PAGE->set_cacheable(false);
 * $PAGE->set_focuscontrol('some-html-id');
 * $PAGE->add_body_class('coding-'.$somevar);
 */
 
 // Output starts here.
-// $PAGE->requires->css('/node_modules/codemirror/lib/codemirror.css');
 echo $renderer->header();
 
 $language = $coding->lang;
@@ -94,19 +81,7 @@ $page = new \mod_coding\output\coding_page($language);
 // if ($coding->intro) {
 //     echo $OUTPUT->box(format_module_intro('coding', $coding, $cm->id), 'generalbox mod_introbox', 'codingintro');
 // }
-
-// Replace the following lines with you own code.
 echo $OUTPUT->heading('Monaco Editor Sample');
-// echo $OUTPUT->div('hello world', '' , array());
-// echo html_writer::div('hello world');
 echo html_writer::div('', '',  array('id' => 'container', 'style' => 'width:800px;height:500px;border:1px solid grey'));
 echo $renderer->render_codingpage($page);
-
-// echo html_writer::script('', '../../node_modules/monaco-editor/dev/vs/loader.js');
-// $PAGE->requires->js_call_amd('mod_coding/refresh', 'hello');
-// echo html_writer::script('', '../../local/js/saveRequire.js');
-// echo html_writer::script('', '../../local/js/restoreRequire.js');
-// echo html_writer::script('', '../../local/js/codeeditor.js');
-// echo $coding->view(optional_param('action', '', PARAM_ALPHA));
-// Finish the page.
 echo $renderer->footer();

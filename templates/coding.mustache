@@ -8,10 +8,8 @@
 </div>
 
 {{#js}}
-    {{! console.log("require is", require) }}
     lang = '{{language}}';
     var editorLanguage = lang === 'clang' ? 'c' : lang;
-    {{! console.log('language is ', language); }}
     if (!window.lang) {
         window.lang = lang;
     }
@@ -41,8 +39,6 @@
     require.config({ paths: { 'vs': '../../../node_modules/monaco-editor/min/vs' }});
 
     require(['vs/editor/editor.main'], function() {
-    
-    {{! console.log("LANGUAGES ARE ", monaco.languages.getLanguages()); }}
 
     if (!window.editor) {
         var editor = monaco.editor.create(document.getElementById('container'), {
@@ -56,7 +52,5 @@
 
         window.editor = editor;
     }
-    {{! console.log("window editor") }}
-    {{! console.log("editor is ", editor); }}
     });
 {{/js}}

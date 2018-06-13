@@ -75,7 +75,6 @@ class mod_coding_sandbox {
         $logFile = $this->path . "/logfile";
         $logLines = file($logFile);
         return implode("\n", $logLines);
-        // return file_get_contents($this->path . "/logfile");
     }
 
     public function run() {
@@ -93,13 +92,8 @@ class mod_coding_sandbox {
 
         $return_var = -1;
         $output = array(); 
-        // $last_line = exec($command, $output, $return_var);
         shell_exec($command);
-        // var_dump($output);
-        // $this->cleanEnvironment();
-        // if($return_var === 0) {
-        //     return $last_line;
-        // }
+        $this->cleanEnvironment();
 
         return $this->logFileContents();
     }

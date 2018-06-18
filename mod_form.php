@@ -51,9 +51,16 @@ class mod_coding_mod_form extends moodleform_mod {
             'clang' => 'c'
         );
 
-        // Adding the "general" fieldset, where all the common settings are showed.
         $mform->addElement('header', 'general', get_string('general', 'coding'));
         
+        //Add tests editors
+        $mform->addElement('editor', 'visibletests_editor', get_string('visibletests', 'coding'), array('rows' => 10), array('maxfiles' => EDITOR_UNLIMITED_FILES,
+        'noclean' => true, 'context' => $this->context, 'subdirs' => true));
+        $mform->setType('visibletests', PARAM_RAW); 
+        
+        $mform->addElement('editor', 'hiddentests', get_string('hiddentests', 'coding'),  array('rows' => 10), array('maxfiles' => EDITOR_UNLIMITED_FILES,
+        'noclean' => true, 'context' => $this->context, 'subdirs' => true));
+        $mform->setType('hiddentests', PARAM_RAW); 
         
         // Adding the standard "name" field.
         $mform->addElement('text', 'name', get_string('codingname', 'coding'), array('size' => '64'));

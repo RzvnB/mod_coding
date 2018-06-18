@@ -55,6 +55,7 @@ $event->add_record_snapshot($PAGE->cm->modname, $coding);
 $event->trigger();
 
 // $coding = new coding();
+error_log("The fucking data is " . var_export($coding, true));
 
 
 $urlparams = array('id' => $cm->id,

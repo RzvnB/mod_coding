@@ -74,7 +74,7 @@ class mod_coding_sandbox {
     private function logFileContents() {
         $logFile = $this->path . "/logfile";
         $logLines = file($logFile);
-        return implode("\n", $logLines);
+        return implode("", $logLines);
     }
 
     public function run() {
@@ -86,16 +86,17 @@ class mod_coding_sandbox {
         $dockerImage = "appbuilder4";
 
         $buildCommand = "/usr/scripts/build.sh " . $this->timeout . " " . $execCommand . " " . $compiler  . " " . $fileName . " " . $flags;
-        $command = "docker run --volume " . $this->path . ":/usr/src/app --rm " . $dockerImage . " " . $buildCommand;
+        $command = "docker run --cap-drop=ALL --volume " . $this->path . ":/usr/src/app --rm " . $dockerImage . " " . $buildCommand;
         
         error_log("The command is " . $command);
 
         $return_var = -1;
         $output = array(); 
         shell_exec($command);
+        $logContents = $this->logFileContents();
         $this->cleanEnvironment();
 
-        return $this->logFileContents();
+        return $logContents;
     }
     
 }

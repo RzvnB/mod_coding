@@ -81,6 +81,9 @@ function coding_add_instance(stdClass $coding, mod_coding_mod_form $mform = null
 
     // You may have to add extra stuff in here.
 
+    $coding = file_postupdate_standard_editor($coding, 'visibletests', array(), $context,
+    'mod_coding', 'visibletests', $coding->id);
+    
     $coding->id = $DB->insert_record('coding', $coding);
 
     coding_grade_item_update($coding);
@@ -103,15 +106,28 @@ function coding_update_instance(stdClass $coding, mod_coding_mod_form $mform = n
     global $DB;
 
     
-    error_log("The data is " . var_export($coding, true));
-    // error_log("The form is " . var_export($mform->getElement('lang'), true));
-
+    // error_log("The data is " . var_export($coding, true));
+    // error_log("The data is " . var_export($mform->get_data(), true));
+    $context = context_system::instance(); 
+    
     $coding->timemodified = time();
     $coding->id = $coding->instance;
-
+    
+    $coding = file_postupdate_standard_editor($coding, 'visibletests', array(), $context,
+    'mod_coding', 'visibletests', $coding->id);
+    
+    // $visibletests = $coding->visibletests['text'];
+    // $hiddentests = $coding->hiddentests['text'];
+    // $coding->visibletests = $visibletests;
+    // $coding->hiddentests = $hiddentests;
+    
+    // error_log("The visible tests is " . var_export($visibletests, true));
+    error_log("The data is " . var_export($coding, true));
     // You may have to add extra stuff in here.
 
     $result = $DB->update_record('coding', $coding);
+    
+    error_log("The result is " . var_export($result, true));
 
     coding_grade_item_update($coding);
 

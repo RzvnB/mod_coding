@@ -42,3 +42,5 @@ $string['pluginadministration'] = 'coding administration';
 $string['pluginname'] = 'coding';
 $string['refresh'] = 'Refresh me!';
 $string['general'] = 'Yello!';
+$string['visibletests'] = 'Visible Tests';
+$string['hiddentests'] = 'Hidden Tests';

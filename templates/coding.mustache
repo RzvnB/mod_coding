@@ -1,14 +1,34 @@
-<div data-region="index-page">
-    <button id="refresh">
+<div data-region="index-page" style="margin-top: 20px">
+    <button id="run-button">
         Run code
     </button>
-{{#compile_result}}
-    <div class="card-block" style="background: #ddadad;">{{ . }}</div>
-{{/compile_result}}
+    {{#done}}
+        <div id="diff-editor" style="width:800px;height:200px;border:1px solid grey; margin-top: 2rem;"></div>
+        
+        {{#js}}
+            console.log("helloo muchacho");     
+            var output = `{{output}}`;
+            var compile_result =`{{compile_result}}`;
+            console.log("ouput is ", output);
+            var originalModel = monaco.editor.createModel(output, "text/plain");
+            var modifiedModel = monaco.editor.createModel(compile_result, "text/plain");
+            var diffEditor = monaco.editor.createDiffEditor(document.getElementById("diff-editor"), {
+                readOnly: true
+            });
+            diffEditor.setModel({
+                original: originalModel,
+                modified: modifiedModel
+            });
+        {{/js}}
+    {{/done}}
 </div>
 
 {{#js}}
     lang = '{{language}}';
+    var input = `{{input}}`;
+    var output = `{{output}}`;
+    {{! console.log("the output is ", output); }}
+    {{! console.log("the input is ", input); }}
     var editorLanguage = lang === 'clang' ? 'c' : lang;
     if (!window.lang) {
         window.lang = lang;
@@ -33,8 +53,8 @@
             ].join('\n')
     }
 
-    require(['mod_coding/refresh'], function(refresh) {
-        refresh.refresh();
+    require(['mod_coding/codeRunner.service'], function(codeRunnerService) {
+        codeRunnerService.runTests(input, output);
     });
     require.config({ paths: { 'vs': '../../../node_modules/monaco-editor/min/vs' }});
 
@@ -48,7 +68,7 @@
             cursorStyle: 'block',
             theme: 'vs-dark',
             wordBasedSuggestions: true,
-            readOnly: true
+            readOnly: false
         });
 
         window.editor = editor;

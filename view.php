@@ -17,8 +17,6 @@
 /**
  * Prints a particular instance of coding
  *
- * You can have a rather longer description of the file as well,
- * if you like, and it can span multiple lines.
  *
  * @package    mod_coding
  * @copyright  2016 Your Name <your@email.address>
@@ -29,8 +27,8 @@ require_once(dirname(dirname(dirname(__FILE__))).'/config.php');
 require_once(dirname(__FILE__).'/lib.php');
 require_once($CFG->dirroot . '/mod/coding/locallib.php');
 
-$id = optional_param('id', 0, PARAM_INT); // Course_module ID, or
-$n  = optional_param('n', 0, PARAM_INT);  // ... coding instance ID - it should be named as the first character of the module.
+$id = optional_param('id', 0, PARAM_INT); 
+$n  = optional_param('n', 0, PARAM_INT);  
 
 if ($id) {
     $cm         = get_coursemodule_from_id('coding', $id, 0, false, MUST_EXIST);
@@ -54,9 +52,7 @@ $event->add_record_snapshot('course', $PAGE->course);
 $event->add_record_snapshot($PAGE->cm->modname, $coding);
 $event->trigger();
 
-// $coding = new coding();
-error_log("The fucking data is " . var_export($coding, true));
-
+error_log("The coding in view is " . var_export($coding, true));
 
 $urlparams = array('id' => $cm->id,
 'action' => optional_param('action', '', PARAM_ALPHA));
@@ -73,16 +69,16 @@ $renderer = $PAGE->get_renderer('mod_coding');
 * $PAGE->add_body_class('coding-'.$somevar);
 */
 
-// Output starts here.
 echo $renderer->header();
 
 $language = $coding->lang;
-$page = new \mod_coding\output\coding_page($language);
-// Conditions to show the intro can change to look for own settings or whatever.
-// if ($coding->intro) {
-//     echo $OUTPUT->box(format_module_intro('coding', $coding, $cm->id), 'generalbox mod_introbox', 'codingintro');
-// }
-echo $OUTPUT->heading('Monaco Editor Sample');
+$input = $coding->visibleinput;
+$output = $coding->visibletests;
+
+$page = new \mod_coding\output\coding_page($language, $input, $output);
+if ($coding->intro) {
+    echo $OUTPUT->box(format_module_intro('coding', $coding, $cm->id), 'generalbox mod_introbox', 'codingintro');
+}
 echo html_writer::div('', '',  array('id' => 'container', 'style' => 'width:800px;height:500px;border:1px solid grey'));
 echo $renderer->render_codingpage($page);
 echo $renderer->footer();

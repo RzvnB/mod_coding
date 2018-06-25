@@ -7,15 +7,17 @@ class mod_coding_sandbox {
 
     private $code;
     private $language;
+    private $input;
     private $timeout;
     private $path;
     private $basePath;
     private $environments;
 
-    public function __construct($code, $language, $timeout=60) {
+    public function __construct($code, $language, $input, $timeout=60) {
         global $CFG;
         $this->code = $code;
         $this->language = $language;
+        $this->input = $input;
         $this->timeout = $timeout;
         // $this->basePath = $CFG->dirroot . '/mod/coding/temp';
         $this->basePath = '/tmp';
@@ -40,7 +42,7 @@ class mod_coding_sandbox {
     }
     
     private function generateDirPath() {
-        $dirName = uniqid('workspace_');
+        $dirName = uniqid('workspace_', TRUE);
         return $this->basePath . '/' . $dirName;
     }
 
@@ -49,6 +51,17 @@ class mod_coding_sandbox {
         $filePath = $this->path . '/' . $fileName;
         $fileHandle = fopen($filePath, "w") or die("Unable to open file!");
         fwrite($fileHandle, $this->code);
+        fclose($fileHandle);
+    }
+    
+    private function createInputFile() {
+        $inputFilePath = $this->path . '/input';
+        $fileHandle = fopen($inputFilePath, "w") or die ("Unable to open file!");
+        
+        error_log("The input in sandbox is " . var_export($this->input, true));
+        $x = fwrite($fileHandle, $this->input); 
+        error_log("Bytes written is " . var_export($x, true));
+        fclose($fileHandle);
     }
     
     private function prepareEnvironment() {
@@ -56,8 +69,9 @@ class mod_coding_sandbox {
         if (is_dir($this->path)) {
             $this->path = $this->generateDirPath();
         }
-        mkdir($this->path);
+        mkdir($this->path) or die ("Unable to create directory!");
         $this->createSourceFile();
+        $this->createInputFile();
     }
     
     private function generateExecCommand($fileName) {
@@ -94,7 +108,7 @@ class mod_coding_sandbox {
         $output = array(); 
         shell_exec($command);
         $logContents = $this->logFileContents();
-        $this->cleanEnvironment();
+        // $this->cleanEnvironment();
 
         return $logContents;
     }

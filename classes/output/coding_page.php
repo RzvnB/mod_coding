@@ -11,9 +11,13 @@ use stdClass;
 class coding_page implements renderable, templatable {
 
     private $language;
+    private $input;
+    private $output;
 
-    public function __construct($language) {
+    public function __construct($language, $input, $output) {
         $this->language = $language;
+        $this->input = $input;
+        $this->output = $output;
     }
     
     /**
@@ -22,8 +26,10 @@ class coding_page implements renderable, templatable {
      * @return stdClass
      */
     public function export_for_template(renderer_base $output) {
-        $data = [ 'language' => $this->language ];
-        // $data = \mod_webservice_external::compile();
+        error_log("The output in coding page is " . var_export($this->output, true));
+        $data = [ 'language' => $this->language,
+                  'output' => $this->output,
+                  'input' => $this->input ];
         return $data;
     }
 }

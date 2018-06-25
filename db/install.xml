@@ -18,6 +18,8 @@
         <FIELD NAME="visibletests" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="hiddentests" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="visibletestsformat" TYPE="int" LENGTH="4" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="format for visible tests editor"/>
+        <FIELD NAME="visibleinput" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="hiddeninput" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>

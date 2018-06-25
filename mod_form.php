@@ -46,6 +46,9 @@ class mod_coding_mod_form extends moodleform_mod {
 
         $mform = $this->_form;
 
+        
+        error_log("Context is " . var_export($this->context, true));
+
         $availableLanguages = array(
             'java' => 'java', 
             'clang' => 'c'
@@ -54,16 +57,21 @@ class mod_coding_mod_form extends moodleform_mod {
         $mform->addElement('header', 'general', get_string('general', 'coding'));
         
         //Add tests editors
-        $mform->addElement('editor', 'visibletests_editor', get_string('visibletests', 'coding'), array('rows' => 10), array('maxfiles' => EDITOR_UNLIMITED_FILES,
-        'noclean' => true, 'context' => $this->context, 'subdirs' => true));
-        $mform->setType('visibletests', PARAM_RAW); 
+        // $mform->addElement('editor', 'visibletests_editor', get_string('visibletests', 'coding'), array('rows' => 10), array('maxfiles' => EDITOR_UNLIMITED_FILES,
+        // 'noclean' => true, 'context' => $this->context, 'subdirs' => true));
+        // $mform->setType('visibletests', PARAM_RAW); 
         
-        $mform->addElement('editor', 'hiddentests', get_string('hiddentests', 'coding'),  array('rows' => 10), array('maxfiles' => EDITOR_UNLIMITED_FILES,
-        'noclean' => true, 'context' => $this->context, 'subdirs' => true));
-        $mform->setType('hiddentests', PARAM_RAW); 
+        // $mform->addElement('editor', 'hiddentests', get_string('hiddentests', 'coding'),  array('rows' => 10), array('maxfiles' => EDITOR_UNLIMITED_FILES,
+        // 'noclean' => true, 'context' => $this->context, 'subdirs' => true));
+        // $mform->setType('hiddentests', PARAM_RAW); 
         
         // Adding the standard "name" field.
         $mform->addElement('text', 'name', get_string('codingname', 'coding'), array('size' => '64'));
+        
+        $mform->addElement('textarea', 'visibletests', get_string('visibletests', 'coding'), 'wrap="virtual" rows="10" cols="50"');
+        $mform->addElement('textarea', 'visibleinput', 'Visible input', 'wrap="virtual" rows="10" cols="50"');
+        $mform->addElement('textarea', 'hiddentests', get_string('hiddentests', 'coding'), 'wrap="virtual" rows="10" cols="50"');
+        $mform->addElement('textarea', 'hiddeninput', 'Hidden input', 'wrap="virtual" rows="10" cols="50"');
         
         $mform->addElement('select', 'lang', 'Select language: ', $availableLanguages);
         // $mform->addElement('text', 'lang', 'language', array('size' => '64'));
@@ -102,4 +110,5 @@ class mod_coding_mod_form extends moodleform_mod {
         // Add standard buttons, common to all modules.
         $this->add_action_buttons();
     }
+    
 }
